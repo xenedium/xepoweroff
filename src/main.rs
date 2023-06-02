@@ -1,4 +1,4 @@
-use std::mem::size_of;
+use std::{mem::size_of, time::Duration, thread};
 use windows::{
     core::PCWSTR,
     Win32::{
@@ -87,10 +87,10 @@ fn wait_for_process(pid: u32) {
 
         loop {
             GetExitCodeProcess(process_handle, &mut process_exit_code);
-
             if process_exit_code != 259 {
                 break;
             }
+            thread::sleep(Duration::from_millis(1000));
         }
 
         CloseHandle(process_handle);
